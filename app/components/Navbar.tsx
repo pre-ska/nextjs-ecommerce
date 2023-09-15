@@ -16,8 +16,6 @@ const Navbar = () => {
 
   const { data: session } = useSession();
 
-  console.log(session);
-
   const SignOut = () => {
     if (session && session.user) {
       return (
@@ -55,7 +53,7 @@ const Navbar = () => {
       <div className="flex items-center justify-between py-4 relative">
         <div className="flex items-center md:space-x-10 lg:space-x-20">
           <div className="font-semibold text-2xl">
-            <a href="/">SEINE</a>
+            <a href="/">Luxuria</a>
           </div>
           <nav className="max-md:hidden">
             <ul className="flex items-center lg:space-x-10 space-x-7 opacity-70 text-[15px]">
@@ -84,7 +82,7 @@ const Navbar = () => {
           <div onClick={() => setShowProfile(!showProfile)} className="relative cursor-pointer">
             <img src="user.jpg" className="w-[35px] h-[35px] rounded-full object-cover" alt="" />
             <div
-              className={`absolute bg-white z-[2] rounded-lg shadow-lg ${
+              className={`absolute bg-white z-[2] rounded-lg shadow-lg -translate-x-16 ${
                 showProfile ? "" : "hidden"
               }`}
             >
