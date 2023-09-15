@@ -1,35 +1,56 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import Link from "next/link";
+import axios from "axios";
 
-const SignInForm = () => {
-  const router = useRouter();
+const SignUpForm = () => {
   const [user, setUser] = useState({
+    name: "",
     email: "",
     password: "",
   });
 
-  const Login = () => {
-    try {
-      signIn("credentials", {
-        email: user.email,
-        password: user.password,
-        redirect: true,
-        callbackUrl: "/",
+  const router = useRouter();
+
+  const Register = () => {
+    const data = {
+      name: user.name.trim(),
+      email: user.email.trim(),
+      password: user.password.trim(),
+    };
+
+    axios
+      .post("/api/register", data)
+      .then((response) => {
+        //! TODO - stavi toast notifikaciju da je user kreiran response.data.name - "User created"
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        router.push("/signin");
       });
-    } catch {
-      console.log("Error while logging in");
-    }
   };
 
-  const disabledBtn = !user.email.trim() || !user.password.trim();
+  const disabledBtn = !user.name.trim() || !user.email.trim() || !user.password.trim();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <div className="p-10 rounded-lg shadow-lg flex flex-col">
-        <h1 className="text-xl font-medium mb-4">Sign In</h1>
+        <h1 className="text-xl font-medium mb-4">Sign Up</h1>
+        <label htmlFor="" className="mb-2">
+          Name
+        </label>
+        <input
+          type="text"
+          className="p-2 border-gray-300 border-[1px] rounded-lg w-[300px] mb-4 focus:outline-none focus:border-gray-600 text-black"
+          id="name"
+          value={user.name}
+          placeholder="name"
+          onChange={(e) => setUser({ ...user, name: e.target.value })}
+        />
         <label htmlFor="" className="mb-2">
           Email
         </label>
@@ -45,7 +66,7 @@ const SignInForm = () => {
           Password
         </label>
         <input
-          type="text"
+          type="password"
           className="p-2 border-gray-300 border-[1px] rounded-lg w-[300px] mb-4 focus:outline-none focus:border-gray-600 text-black"
           id="password"
           value={user.password}
@@ -53,16 +74,16 @@ const SignInForm = () => {
           onChange={(e) => setUser({ ...user, password: e.target.value })}
         />
         <button
-          onClick={Login}
+          onClick={Register}
           disabled={disabledBtn}
           className={`p-2 border bg-purple-600 text-white border-gray-300 mt-2 mb-4 focus:outline-none focus:border-gray-600 ${
             disabledBtn ? "cursor-not-allowed bg-purple-200" : ""
           }`}
         >
-          Login Now
+          Register Now
         </button>
-        <Link href="/signup" className="text-sm text-center mt-5 text-neutral-600">
-          Do not have an account?
+        <Link href="/signin" className="text-sm text-center mt-5 text-neutral-600">
+          Already have an Account?
         </Link>
         <Link href="/" className="text-center mt-2">
           Home
@@ -72,4 +93,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;

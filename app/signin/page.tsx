@@ -1,12 +1,10 @@
-import React from 'react'
-import Signinform from './signinform'
+import React from "react";
+import SignInForm from "./signInForm";
 
-type Props = {}
+type Props = {};
 
 const page = (props: Props) => {
-  return (
-    <Signinform/>
-  )
-}
+  return <SignInForm />;
+};
 
-export default page
+export default page;
